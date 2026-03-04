@@ -21,6 +21,12 @@ export const SHADOW_CSS = `
   }
 
   /* ── Character sprite ── */
+  @keyframes breathe {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(4px); }
+    100% { transform: translateY(0); }
+  }
+
   .character {
     width: ${COMPANION_SIZE}px;
     height: ${COMPANION_SIZE}px;
@@ -29,14 +35,16 @@ export const SHADOW_CSS = `
     cursor: grab;
     transition: filter 0.15s ease;
     display: block;
+    animation: breathe 3s ease-in-out infinite;
   }
 
   .character:active {
     cursor: grabbing;
+    animation-play-state: paused;
   }
 
   .character:hover {
-    filter: brightness(1.1);
+    filter: brightness(1.05);
   }
 
   /* ── Speech bubble ── */

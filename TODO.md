@@ -1,0 +1,10 @@
+- [ ] Settings Page
+  - [ ] LLM Integration (Gemini, OpenAI, Claude)
+- [ ] Clear Chat 
+- [ ] Memory -> Store user preferences, history, styles, etc.
+- [ ] Add new commands
+  - [ ] /summarize -> summarize current page
+  - [ ] /update-memory -> update the memory of the companion
+  - [ ] /mode <mode> -> set the mode of the companion
+    - `crawl-web` -> send the current page to the llm so user can ask questions about the page
+    - `translate <target_language>` -> translation assistant, focus on the text given by the user and translate it to the target_language

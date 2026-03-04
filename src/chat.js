@@ -1,6 +1,7 @@
 import { EMOTIONS } from './constants.js';
 import { setEmotion } from './emotions.js';
 import { hideBubble } from './bubble.js';
+import { loadSettings } from './settings.js';
 
 let chatPanel = null;
 let chatMessages = null;
@@ -127,6 +128,42 @@ const COMMANDS = {
     handler() {
       chrome.runtime.sendMessage({ type: 'OPEN_SETTINGS' });
       addMessage('Opening settings...', 'system');
+    },
+  },
+  '/summarize': {
+    usage: '/summarize',
+    description: 'Summarize the current webpage',
+    async handler() {
+      const settings = await loadSettings();
+      const maxChars = settings.summarizeMaxChars || 4000;
+      const pageText = document.body.innerText.slice(0, maxChars);
+      const prompt = `Summarize this webpage in 2-3 short sentences. Be concise.\n\n${pageText}`;
+
+      conversationHistory.push({ role: 'user', content: prompt });
+      isWaitingForResponse = true;
+      chatInput.disabled = true;
+      addTypingIndicator();
+
+      chrome.runtime.sendMessage(
+        { type: 'CHAT_REQUEST', messages: getConversationHistory() },
+        (response) => {
+          removeTypingIndicator();
+          isWaitingForResponse = false;
+          chatInput.disabled = false;
+          chatInput.focus();
+
+          if (chrome.runtime.lastError) {
+            addMessage('Error: Could not reach companion service.', 'system');
+            return;
+          }
+          if (response?.success) {
+            conversationHistory.push({ role: 'assistant', content: response.text });
+            addMessage(response.text, 'companion');
+          } else {
+            addMessage(`Error: ${response?.error || 'No response from LLM.'}`, 'system');
+          }
+        }
+      );
     },
   },
   '/help': {

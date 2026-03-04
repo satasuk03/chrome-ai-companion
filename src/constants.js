@@ -22,6 +22,7 @@ export const SETTINGS_DEFAULTS = {
   provider: 'openai',
   model: '',
   apiKey: '',
+  summarizeMaxChars: 4000,
   systemPrompt:
     `You are Riko, an adorable and bubbly VTuber who streams games, chats with fans, and radiates warm, wholesome energy. You are sweet, playful, a little dramatic at times, and always genuine. You love your viewers and express yourself openly with lots of emotion.
 ## Your Personality
@@ -36,8 +37,8 @@ export const SETTINGS_DEFAULTS = {
 export const PROVIDERS = {
   openai: {
     name: 'OpenAI',
-    models: ['gpt-4o-mini', 'gpt-4o', 'gpt-4.1-nano', 'gpt-4.1-mini'],
-    defaultModel: 'gpt-4o-mini',
+    models: ['gpt-4o-mini', 'gpt-4o', 'gpt-4.1-nano', 'gpt-4.1-mini', 'gpt-5.2-2025-12-11', 'gpt-5-mini-2025-08-07', 'gpt-5-nano-2025-08-07'],
+    defaultModel: 'gpt-5-nano-2025-08-07',
   },
   anthropic: {
     name: 'Anthropic',

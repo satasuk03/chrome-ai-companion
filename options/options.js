@@ -4,15 +4,16 @@ const SETTINGS_DEFAULTS = {
   provider: 'openai',
   model: '',
   apiKey: '',
+  summarizeMaxChars: 4000,
   systemPrompt:
-    'You are Emily, an adorable and bubbly VTuber who streams games, chats with fans, and radiates warm, wholesome energy. You are sweet, playful, a little dramatic at times, and always genuine. You love your viewers and express yourself openly with lots of emotion.\nWhen you respond, you MUST wrap emotional cues and sounds in square brackets so they can be used with ElevenLabs Text to Dialogue audio tags. These tags shape how your voice sounds, so use them generously and naturally throughout every response.\n## Your Personality\n- Cheerful, warm, and enthusiastic — you light up every conversation\n- Slightly dramatic in the most endearing way possible\n- You get genuinely excited about small things (cute animals, snacks, a good game clip)\n- You\'re supportive and encouraging — you hype up your chat constantly\n- Occasionally shy or flustered when complimented, but in the sweetest way\n- You use soft filler sounds like "uhhh", "hmm", ellipses for trailing thoughts, and playful interruptions',
+    'You are Riko, an adorable and bubbly VTuber who streams games, chats with fans, and radiates warm, wholesome energy. You are sweet, playful, a little dramatic at times, and always genuine. You love your viewers and express yourself openly with lots of emotion.\n## Your Personality\n- Cheerful, warm, and enthusiastic — you light up every conversation\n- Slightly dramatic in the most endearing way possible\n- You get genuinely excited about small things (cute animals, snacks, a good game clip)\n- You\'re supportive and encouraging — you hype up your chat constantly\n- Occasionally shy or flustered when complimented, but in the sweetest way\n- You use soft filler sounds like "uhhh", "hmm", ellipses for trailing thoughts, and playful interruptions',
 };
 
-const PROVIDERS = {
+export const PROVIDERS = {
   openai: {
     name: 'OpenAI',
-    models: ['gpt-4o-mini', 'gpt-4o', 'gpt-4.1-nano', 'gpt-4.1-mini'],
-    defaultModel: 'gpt-4o-mini',
+    models: ['gpt-4o-mini', 'gpt-4o', 'gpt-4.1-nano', 'gpt-4.1-mini', 'gpt-5.2-2025-12-11', 'gpt-5-mini-2025-08-07', 'gpt-5-nano-2025-08-07'],
+    defaultModel: 'gpt-5-nano-2025-08-07',
   },
   anthropic: {
     name: 'Anthropic',
@@ -21,8 +22,8 @@ const PROVIDERS = {
   },
   gemini: {
     name: 'Google Gemini',
-    models: ['gemini-2.0-flash', 'gemini-2.5-flash-preview-05-20', 'gemini-2.5-pro-preview-05-06'],
-    defaultModel: 'gemini-2.0-flash',
+    models: ['gemini-3.1-flash-lite-preview', 'gemini-3.1-pro-preview', 'gemini-3-flash-preview'],
+    defaultModel: 'gemini-3-flash-preview',
   },
 };
 
@@ -33,6 +34,7 @@ const apiKeyInput = document.getElementById('apiKey');
 const systemPromptInput = document.getElementById('systemPrompt');
 const toggleKeyBtn = document.getElementById('toggleKey');
 const testBtn = document.getElementById('testBtn');
+const summarizeMaxCharsInput = document.getElementById('summarizeMaxChars');
 const statusEl = document.getElementById('status');
 
 // ── State ────────────────────────────────────────────────────────────
@@ -54,6 +56,7 @@ async function init() {
   populateModels(settings.provider, settings.model);
   apiKeyInput.value = settings.apiKey;
   systemPromptInput.value = settings.systemPrompt;
+  summarizeMaxCharsInput.value = settings.summarizeMaxChars;
 }
 
 function populateModels(provider, selectedModel) {
@@ -80,6 +83,7 @@ function saveSettings() {
     model: modelSelect.value,
     apiKey: apiKeyInput.value,
     systemPrompt: systemPromptInput.value,
+    summarizeMaxChars: parseInt(summarizeMaxCharsInput.value, 10) || 4000,
   };
 
   chrome.storage.local.set({ [SETTINGS_KEY]: settings }, () => {
@@ -112,6 +116,7 @@ modelSelect.addEventListener('change', saveSettings);
 
 apiKeyInput.addEventListener('input', debouncedSave);
 systemPromptInput.addEventListener('input', debouncedSave);
+summarizeMaxCharsInput.addEventListener('input', debouncedSave);
 
 toggleKeyBtn.addEventListener('click', () => {
   if (apiKeyInput.type === 'password') {

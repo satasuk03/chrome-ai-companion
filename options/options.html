@@ -36,6 +36,12 @@
         <textarea id="systemPrompt" name="systemPrompt" rows="4" placeholder="Describe the companion's personality..."></textarea>
       </section>
 
+      <section>
+        <h2>Summarize</h2>
+        <label for="summarizeMaxChars">Max characters to extract</label>
+        <input type="number" id="summarizeMaxChars" name="summarizeMaxChars" min="500" max="20000" step="500" placeholder="4000">
+      </section>
+
       <div class="actions">
         <button type="button" id="testBtn" class="btn">Test Connection</button>
         <span id="status"></span>

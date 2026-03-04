@@ -8,7 +8,11 @@ export const EMOTIONS = {
   happy: 'assets/happy.webp',
   blush: 'assets/blush.webp',
   angry: 'assets/angry.webp',
+  speak1: 'assets/speak-1.webp',
+  speak2: 'assets/speak-2.webp',
 };
+
+export const SPEAK_FRAME_INTERVAL = 150;
 
 // Sprites that rotate randomly when no emotion is explicitly set
 export const IDLE_SPRITES = ['neutral', 'idle'];

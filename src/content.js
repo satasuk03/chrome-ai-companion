@@ -1,7 +1,7 @@
 import { EMOTIONS } from './constants.js';
 import { SHADOW_CSS } from './styles.js';
 import { loadPosition } from './storage.js';
-import { initEmotions, preloadSprites } from './emotions.js';
+import { initEmotions, preloadSprites, startSpeakingAnim, stopSpeakingAnim } from './emotions.js';
 import { initBubble, setBubbleTextAnimated } from './bubble.js';
 import { initChat, isChatVisible } from './chat.js';
 import { initDrag, getPosition, setPosition, clampToViewport } from './drag.js';
@@ -114,7 +114,7 @@ import { attachMessageListeners } from './messages.js';
 
     initBubble(
       { bubble: bubbleEl, bubbleContent: bubbleContentEl },
-      { isChatVisible, getPosition }
+      { isChatVisible, getPosition, onSpeakStart: startSpeakingAnim, onSpeakEnd: stopSpeakingAnim }
     );
 
     initChat(

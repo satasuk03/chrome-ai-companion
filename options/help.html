@@ -92,8 +92,12 @@
           <td>Show available commands in chat</td>
         </tr>
         <tr>
+          <td><code>/summarize</code></td>
+          <td>Summarize the current webpage via LLM</td>
+        </tr>
+        <tr>
           <td><code>/set-emotion &lt;name&gt;</code></td>
-          <td>Change sprite — neutral, idle, happy, blush, angry</td>
+          <td>Change sprite — neutral, happy, blush, angry</td>
         </tr>
         <tr>
           <td><code>/clear</code></td>
@@ -115,7 +119,7 @@
         </tr>
         <tr>
           <td>OpenAI</td>
-          <td>gpt-4o-mini, gpt-4o, gpt-4.1-nano, gpt-4.1-mini</td>
+          <td>gpt-4o-mini, gpt-4o, gpt-4.1-nano, gpt-4.1-mini, gpt-5.2, gpt-5-mini, gpt-5-nano</td>
         </tr>
         <tr>
           <td>Anthropic</td>
@@ -123,7 +127,7 @@
         </tr>
         <tr>
           <td>Google Gemini</td>
-          <td>gemini-2.0-flash, gemini-2.5-flash, gemini-2.5-pro</td>
+          <td>gemini-3.1-flash-lite, gemini-3.1-pro, gemini-3-flash</td>
         </tr>
       </table>
     </div>
@@ -133,8 +137,8 @@
       <ul>
         <li><strong>Draggable</strong> — position persists across all sites</li>
         <li><strong>Emotions</strong> — companion swaps between idle sprites and reacts on hover</li>
-        <li><strong>Speech bubble</strong> — auto-shows greetings with typewriter animation</li>
-        <li><strong>Chat panel</strong> — full conversation with LLM, retro pixel-art style</li>
+        <li><strong>Speech bubble</strong> — typewriter animation with speaking sprite cycling</li>
+        <li><strong>Chat panel</strong> — full conversation with LLM, animated responses, retro pixel-art style</li>
         <li><strong>Shadow DOM</strong> — styles never leak in or out of the host page</li>
         <li><strong>SPA resilient</strong> — auto re-injects if the page removes the companion</li>
       </ul>
@@ -144,8 +148,10 @@
       <h2>Tips</h2>
       <ul>
         <li>The companion shows <strong>happy</strong> face when you hover over her.</li>
-        <li>She randomly switches between <strong>neutral</strong> and <strong>idle</strong> sprites every 10–15 seconds.</li>
+        <li>She randomly switches between <strong>neutral</strong> and <strong>idle</strong> sprites every 10–15s.</li>
+        <li>She cycles speaking sprites while typing out responses.</li>
         <li>Conversation history resets on page navigation. Use <code>/clear</code> to reset manually.</li>
+        <li>Use <code>/summarize</code> to get a quick summary of the current page.</li>
         <li>You can customize the system prompt in settings to change her personality.</li>
       </ul>
     </div>

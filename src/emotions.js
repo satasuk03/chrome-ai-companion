@@ -1,10 +1,11 @@
-import { EMOTIONS, IDLE_SPRITES, IDLE_INTERVAL_MIN, IDLE_INTERVAL_MAX } from './constants.js';
+import { EMOTIONS, IDLE_SPRITES, IDLE_INTERVAL_MIN, IDLE_INTERVAL_MAX, SPEAK_FRAME_INTERVAL } from './constants.js';
 
 let currentEmotion = 'neutral';
 let characterImg = null;
 let idleTimer = null;
 let isHovered = false;
 let emotionOverride = null; // set by explicit setEmotion (non-idle)
+let speakingInterval = null;
 
 export function initEmotions(imgElement) {
   characterImg = imgElement;
@@ -71,6 +72,31 @@ export function clearEmotionOverride() {
 
 export function getCurrentEmotion() {
   return currentEmotion;
+}
+
+export function startSpeakingAnim() {
+  if (speakingInterval) return;
+  // Pause idle shuffle
+  if (idleTimer) { clearTimeout(idleTimer); idleTimer = null; }
+  let isNeutralFrame = true;
+  const speakSprites = ['speak1', 'speak2'];
+  speakingInterval = setInterval(() => {
+    if (isNeutralFrame) {
+      setSpriteUrl('neutral');
+    } else {
+      setSpriteUrl(speakSprites[Math.floor(Math.random() * speakSprites.length)]);
+    }
+    isNeutralFrame = !isNeutralFrame;
+  }, SPEAK_FRAME_INTERVAL);
+}
+
+export function stopSpeakingAnim() {
+  if (!speakingInterval) return;
+  clearInterval(speakingInterval);
+  speakingInterval = null;
+  setSpriteUrl('neutral');
+  emotionOverride = null;
+  scheduleIdleShuffle();
 }
 
 export function preloadSprites() {

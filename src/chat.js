@@ -1,5 +1,5 @@
 import { EMOTIONS } from './constants.js';
-import { setEmotion } from './emotions.js';
+import { setEmotion, startSpeakingAnim, stopSpeakingAnim } from './emotions.js';
 import { hideBubble } from './bubble.js';
 import { loadSettings } from './settings.js';
 
@@ -12,6 +12,7 @@ let getPosition = () => ({ x: 0, y: 0 });
 // Conversation history for LLM context
 let conversationHistory = [];
 let isWaitingForResponse = false;
+let activeChatTypewriterCancel = null;
 
 export function initChat(elements, deps) {
   chatPanel = elements.panel;
@@ -61,6 +62,9 @@ export function openChat() {
 export function closeChat() {
   chatVisible = false;
   chatPanel.classList.remove('visible');
+  if (activeChatTypewriterCancel) {
+    activeChatTypewriterCancel();
+  }
 }
 
 export function updateChatPosition() {
@@ -75,6 +79,38 @@ function addMessage(text, sender) {
   msg.textContent = text;
   chatMessages.appendChild(msg);
   chatMessages.scrollTop = chatMessages.scrollHeight;
+  return msg;
+}
+
+function addMessageAnimated(text, sender, speed) {
+  speed = speed || 30;
+  const msg = document.createElement('div');
+  msg.className = 'chat-msg ' + sender;
+  msg.textContent = '';
+  chatMessages.appendChild(msg);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  startSpeakingAnim();
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i < text.length) {
+      msg.textContent += text[i];
+      i++;
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    } else {
+      clearInterval(interval);
+      stopSpeakingAnim();
+      activeChatTypewriterCancel = null;
+    }
+  }, speed);
+
+  activeChatTypewriterCancel = () => {
+    clearInterval(interval);
+    msg.textContent = text; // show full text on cancel
+    stopSpeakingAnim();
+    activeChatTypewriterCancel = null;
+  };
+
   return msg;
 }
 
@@ -158,7 +194,7 @@ const COMMANDS = {
           }
           if (response?.success) {
             conversationHistory.push({ role: 'assistant', content: response.text });
-            addMessage(response.text, 'companion');
+            addMessageAnimated(response.text, 'companion');
           } else {
             addMessage(`Error: ${response?.error || 'No response from LLM.'}`, 'system');
           }

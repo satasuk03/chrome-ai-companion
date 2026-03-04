@@ -7,12 +7,16 @@ let bubbleTimeout = null;
 let typewriterCancel = null;
 let isChatVisible = () => false;
 let getPosition = () => ({ x: 0, y: 0 });
+let onSpeakStart = null;
+let onSpeakEnd = null;
 
 export function initBubble(elements, deps) {
   bubbleEl = elements.bubble;
   bubbleContentEl = elements.bubbleContent;
   isChatVisible = deps.isChatVisible;
   getPosition = deps.getPosition;
+  onSpeakStart = deps.onSpeakStart || null;
+  onSpeakEnd = deps.onSpeakEnd || null;
 }
 
 export function showBubble() {
@@ -32,6 +36,7 @@ export function hideBubble() {
   if (typewriterCancel) {
     typewriterCancel();
     typewriterCancel = null;
+    if (onSpeakEnd) onSpeakEnd();
   }
 }
 
@@ -43,6 +48,7 @@ export function setBubbleText(text) {
   if (typewriterCancel) {
     typewriterCancel();
     typewriterCancel = null;
+    if (onSpeakEnd) onSpeakEnd();
   }
   bubbleContentEl.textContent = text;
   showBubble();
@@ -53,10 +59,12 @@ export function setBubbleTextAnimated(text, speed) {
   if (typewriterCancel) {
     typewriterCancel();
     typewriterCancel = null;
+    if (onSpeakEnd) onSpeakEnd();
   }
   speed = speed || 30;
   bubbleContentEl.textContent = '';
   showBubble();
+  if (onSpeakStart) onSpeakStart();
 
   let i = 0;
   const interval = setInterval(() => {
@@ -65,6 +73,7 @@ export function setBubbleTextAnimated(text, speed) {
       i++;
     } else {
       clearInterval(interval);
+      if (onSpeakEnd) onSpeakEnd();
       scheduleBubbleHide();
     }
   }, speed);

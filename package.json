@@ -1,0 +1,14 @@
+{
+  "name": "chrome-companion",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A draggable pixel-art companion character Chrome extension",
+  "scripts": {
+    "build": "esbuild src/content.js --bundle --outfile=dist/content.js",
+    "dev": "esbuild src/content.js --bundle --outfile=dist/content.js --watch",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}

@@ -1,8 +1,8 @@
 {
-  "name": "chrome-companion",
+  "name": "riko-chrome-companion",
   "version": "1.0.0",
   "private": true,
-  "description": "A draggable pixel-art companion character Chrome extension",
+  "description": "A pixel-art anime companion that lives in your browser — drag her around, chat with her, and she'll talk back",
   "scripts": {
     "build": "esbuild src/content.js --bundle --outfile=dist/content.js && esbuild src/background/service-worker.js --bundle --outfile=dist/background.js && esbuild options/options.js --bundle --outfile=dist/options.js",
     "dev": "npm run build && (esbuild src/content.js --bundle --outfile=dist/content.js --watch & esbuild src/background/service-worker.js --bundle --outfile=dist/background.js --watch & esbuild options/options.js --bundle --outfile=dist/options.js --watch)",

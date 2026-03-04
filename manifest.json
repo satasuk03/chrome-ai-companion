@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Chrome Companion",
+  "name": "Riko Chrome Companion",
   "version": "1.1.0",
-  "description": "A draggable pixel-art companion character that lives on every web page.",
+  "description": "A chrome companion that lives in your browser — drag her around, chat with her, and she'll talk back",
   "permissions": ["storage"],
   "host_permissions": [
     "https://api.openai.com/*",
@@ -30,7 +30,11 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["assets/*.webp", "options/help.html", "options/options.css"],
+      "resources": [
+        "assets/*.webp",
+        "options/help.html",
+        "options/options.css"
+      ],
       "matches": ["<all_urls>"]
     }
   ]

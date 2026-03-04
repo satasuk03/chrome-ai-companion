@@ -5,6 +5,7 @@
   <p>Meet Riko — your Chrome bestie!</p>
 
   ![Manifest V3](https://img.shields.io/badge/Manifest-V3-blue)
+  ![Chrome Web Store](https://img.shields.io/badge/Chrome_Web_Store-Pending_Review-orange)
 </div>
 
 ## Demo

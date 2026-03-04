@@ -157,3 +157,25 @@ textarea {
 #status.error {
   color: #a32828;
 }
+
+.save-indicator {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  color: #2d6a2e;
+  background: #d4edda;
+  border: 2px solid #2d6a2e;
+  border-radius: 2px;
+  padding: 6px 12px;
+  margin-bottom: 16px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.save-indicator.visible {
+  opacity: 1;
+}

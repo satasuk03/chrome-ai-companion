@@ -9,9 +9,11 @@ const toggleKeyBtn = document.getElementById('toggleKey');
 const testBtn = document.getElementById('testBtn');
 const summarizeMaxCharsInput = document.getElementById('summarizeMaxChars');
 const statusEl = document.getElementById('status');
+const saveIndicator = document.getElementById('saveIndicator');
 
 // ── State ────────────────────────────────────────────────────────────
 let saveTimeout = null;
+let saveIndicatorTimeout = null;
 
 // ── Load settings ────────────────────────────────────────────────────
 async function loadSettings() {
@@ -60,13 +62,22 @@ function saveSettings() {
   };
 
   chrome.storage.local.set({ [SETTINGS_KEY]: settings }, () => {
-    showStatus('Saved', 'success');
+    showSaveIndicator();
   });
 }
 
 function debouncedSave() {
   if (saveTimeout) clearTimeout(saveTimeout);
   saveTimeout = setTimeout(saveSettings, 500);
+}
+
+function showSaveIndicator() {
+  saveIndicator.textContent = 'Saved!';
+  saveIndicator.classList.add('visible');
+  if (saveIndicatorTimeout) clearTimeout(saveIndicatorTimeout);
+  saveIndicatorTimeout = setTimeout(() => {
+    saveIndicator.classList.remove('visible');
+  }, 1500);
 }
 
 function showStatus(text, type) {

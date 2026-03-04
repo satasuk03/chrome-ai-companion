@@ -10,6 +10,8 @@
     <h1>Chrome Companion</h1>
     <p class="subtitle">Settings</p>
 
+    <div id="saveIndicator" class="save-indicator"></div>
+
     <form id="optionsForm">
       <section>
         <h2>LLM Provider</h2>
@@ -29,6 +31,11 @@
           <input type="password" id="apiKey" name="apiKey" placeholder="Enter your API key" autocomplete="off">
           <button type="button" id="toggleKey" class="btn-small" title="Show/hide key">Show</button>
         </div>
+
+        <div class="actions">
+          <button type="button" id="testBtn" class="btn">Test Connection</button>
+          <span id="status"></span>
+        </div>
       </section>
 
       <section>
@@ -42,10 +49,6 @@
         <input type="number" id="summarizeMaxChars" name="summarizeMaxChars" min="500" max="20000" step="500" placeholder="4000">
       </section>
 
-      <div class="actions">
-        <button type="button" id="testBtn" class="btn">Test Connection</button>
-        <span id="status"></span>
-      </div>
     </form>
   </div>
 

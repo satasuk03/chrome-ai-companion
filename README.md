@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/idle.webp" alt="Riko" width="160" />
+  <img src="assets/riko-sprites.gif" alt="Riko" width="160" />
   <h1>Riko Chrome Companion</h1>
   <p><strong>Every tab is better with company.</strong></p>
   <p>Meet Riko — your Chrome bestie!</p>

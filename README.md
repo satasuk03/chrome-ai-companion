@@ -24,6 +24,11 @@
 - **Fully Customizable** — customize Riko's personality, app settings, and behavior to your liking.
 - 🚧 **Emotion system** 
 
+
+<div align="center">
+  <img src="demos/social-detox.webp" alt="Social Detox Assistant" width="300" />
+</div>
+
 ## Getting Started
 
 ```bash

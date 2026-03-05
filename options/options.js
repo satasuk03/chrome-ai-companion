@@ -8,6 +8,8 @@ const systemPromptInput = document.getElementById('systemPrompt');
 const toggleKeyBtn = document.getElementById('toggleKey');
 const testBtn = document.getElementById('testBtn');
 const summarizeMaxCharsInput = document.getElementById('summarizeMaxChars');
+const detoxEnabledInput = document.getElementById('detoxEnabled');
+const detoxSitesInput = document.getElementById('detoxSites');
 const statusEl = document.getElementById('status');
 const saveIndicator = document.getElementById('saveIndicator');
 
@@ -32,6 +34,8 @@ async function init() {
   apiKeyInput.value = settings.apiKey;
   systemPromptInput.value = settings.systemPrompt;
   summarizeMaxCharsInput.value = settings.summarizeMaxChars;
+  detoxEnabledInput.checked = settings.detoxEnabled;
+  detoxSitesInput.value = settings.detoxSites;
 }
 
 function populateModels(provider, selectedModel) {
@@ -59,6 +63,8 @@ function saveSettings() {
     apiKey: apiKeyInput.value,
     systemPrompt: systemPromptInput.value,
     summarizeMaxChars: parseInt(summarizeMaxCharsInput.value, 10) || 4000,
+    detoxEnabled: detoxEnabledInput.checked,
+    detoxSites: detoxSitesInput.value,
   };
 
   chrome.storage.local.set({ [SETTINGS_KEY]: settings }, () => {
@@ -101,6 +107,8 @@ modelSelect.addEventListener('change', saveSettings);
 apiKeyInput.addEventListener('input', debouncedSave);
 systemPromptInput.addEventListener('input', debouncedSave);
 summarizeMaxCharsInput.addEventListener('input', debouncedSave);
+detoxEnabledInput.addEventListener('change', saveSettings);
+detoxSitesInput.addEventListener('input', debouncedSave);
 
 toggleKeyBtn.addEventListener('click', () => {
   if (apiKeyInput.type === 'password') {

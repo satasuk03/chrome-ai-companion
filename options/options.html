@@ -49,6 +49,17 @@
         <input type="number" id="summarizeMaxChars" name="summarizeMaxChars" min="500" max="20000" step="500" placeholder="4000">
       </section>
 
+      <section>
+        <h2>Web Detox</h2>
+        <div class="toggle-row">
+          <input type="checkbox" id="detoxEnabled">
+          <label for="detoxEnabled" class="toggle-label">Enable nagging on greylisted sites</label>
+        </div>
+        <label for="detoxSites">Greylisted sites (one per line)</label>
+        <textarea id="detoxSites" name="detoxSites" rows="5" placeholder="reddit.com&#10;youtube.com&#10;twitter.com"></textarea>
+        <p class="field-hint">Riko will nag you every 10-15 seconds when you visit these sites.</p>
+      </section>
+
     </form>
   </div>
 

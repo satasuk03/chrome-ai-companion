@@ -19,6 +19,27 @@ export const IDLE_SPRITES = ['neutral', 'idle'];
 export const IDLE_INTERVAL_MIN = 10000; // 10s
 export const IDLE_INTERVAL_MAX = 15000; // 15s
 
+// ── Detox ───────────────────────────────────────────────────────────
+export const DETOX_INTERVAL_MIN = 10000; // 10s
+export const DETOX_INTERVAL_MAX = 15000; // 15s
+
+export const DETOX_MESSAGES = [
+  "Uhhh... didn't you say you were gonna be productive today?",
+  "Hmm hmm~ is this really what we're doing right now...?",
+  "H-hey! I'm not judging buuut... okay maybe a little...",
+  "Waaah, you're still here?! Time flies when you're not being productive~",
+  "Psst... your future self is NOT gonna thank you for this...",
+  "Ehehe~ another scroll, another dream delayed~",
+  "I believe in you! ...But like, maybe believe in yourself somewhere else?",
+  "Riko is watching... and Riko is disappointed... just a teensy bit...",
+  "Ohhh no no no, we are NOT doing this again today!!",
+  "You know what's more fun than this? Literally anything productive~",
+  "Uhhh... I'm starting to think you forgot about your goals...",
+  "Hey hey~! Remember that thing you were supposed to do? Yeah... that thing...",
+  "Every second here is a second you can't get back... just saying~!",
+  "I'm gonna keep bugging you until you leave, you know that right~?",
+];
+
 // ── Settings ─────────────────────────────────────────────────────────
 export const SETTINGS_KEY = 'companion_settings';
 
@@ -27,6 +48,8 @@ export const SETTINGS_DEFAULTS = {
   model: '',
   apiKey: '',
   summarizeMaxChars: 4000,
+  detoxEnabled: false,
+  detoxSites: 'reddit.com\nyoutube.com\ntwitter.com\nx.com\nfacebook.com\ninstagram.com\ntiktok.com',
   systemPrompt:
     `You are Riko, an adorable and bubbly VTuber who streams games, chats with fans, and radiates warm, wholesome energy. You are sweet, playful, a little dramatic at times, and always genuine. You love your viewers and express yourself openly with lots of emotion.
 ## Your Personality

@@ -19,10 +19,9 @@
 - **Draggable companion** — drag Riko anywhere on the page, position persists across sites
 - **Chat panel** — click Riko to open a retro-styled chat powered by OpenAI, Anthropic, or Gemini
 - **Speech bubble** — typewriter animation with speaking sprite cycling
-- **Emotion system** — 7 sprites: `neutral`, `idle`, `happy`, `blush`, `angry`, `speak-1`, `speak-2`
 - **Chat commands** — `/summarize`, `/set-emotion`, `/clear`, `/settings`, `/help`
-- **Shadow DOM isolation** — closed Shadow DOM, styles never leak in or out
-- **SPA resilient** — auto re-injects via MutationObserver if the page removes the DOM
+- **Social Detox Assistant** — help you detox from social media and stay focused on your work, when you visit a social media platform, Riko will help you detox by reminding you to take a break and stay focused on your work.
+- 🚧 **Emotion system** 
 
 ## Getting Started
 

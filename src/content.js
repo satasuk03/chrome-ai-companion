@@ -6,6 +6,7 @@ import { initBubble, setBubbleTextAnimated } from './bubble.js';
 import { initChat, isChatVisible } from './chat.js';
 import { initDrag, getPosition, setPosition, clampToViewport } from './drag.js';
 import { attachMessageListeners } from './messages.js';
+import { initDetox } from './detox.js';
 
 (function () {
   // Guard against double-injection
@@ -138,6 +139,9 @@ import { attachMessageListeners } from './messages.js';
 
     // External message listeners
     attachMessageListeners();
+
+    // Detox nagging
+    initDetox({ setBubbleTextAnimated, isChatVisible });
 
     // Viewport resize handler
     window.addEventListener('resize', clampToViewport);

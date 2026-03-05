@@ -1,6 +1,6 @@
 const BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
 
-export async function chat(apiKey, model, messages, systemPrompt) {
+export async function chat(apiKey, model, messages, systemPrompt, maxTokens) {
   const endpoint = `${BASE_URL}/${model}:generateContent`;
 
   // Convert normalized messages to Gemini format
@@ -15,7 +15,7 @@ export async function chat(apiKey, model, messages, systemPrompt) {
     },
     contents,
     generationConfig: {
-      maxOutputTokens: 512,
+      maxOutputTokens: maxTokens || 10240,
       temperature: 0.7,
     },
   };

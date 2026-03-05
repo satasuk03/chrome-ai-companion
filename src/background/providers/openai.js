@@ -1,13 +1,13 @@
 const ENDPOINT = 'https://api.openai.com/v1/chat/completions';
 
-export async function chat(apiKey, model, messages, systemPrompt) {
+export async function chat(apiKey, model, messages, systemPrompt, maxTokens) {
   const body = {
     model,
     messages: [
       { role: 'system', content: systemPrompt },
       ...messages,
     ],
-    max_tokens: 512,
+    max_tokens: maxTokens || 10240,
     temperature: 0.7,
   };
 

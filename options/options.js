@@ -7,6 +7,7 @@ const apiKeyInput = document.getElementById('apiKey');
 const systemPromptInput = document.getElementById('systemPrompt');
 const toggleKeyBtn = document.getElementById('toggleKey');
 const testBtn = document.getElementById('testBtn');
+const maxTokensInput = document.getElementById('maxTokens');
 const summarizeMaxCharsInput = document.getElementById('summarizeMaxChars');
 const detoxEnabledInput = document.getElementById('detoxEnabled');
 const detoxSitesInput = document.getElementById('detoxSites');
@@ -32,6 +33,7 @@ async function init() {
   providerSelect.value = settings.provider;
   populateModels(settings.provider, settings.model);
   apiKeyInput.value = settings.apiKey;
+  maxTokensInput.value = settings.maxTokens;
   systemPromptInput.value = settings.systemPrompt;
   summarizeMaxCharsInput.value = settings.summarizeMaxChars;
   detoxEnabledInput.checked = settings.detoxEnabled;
@@ -61,6 +63,7 @@ function saveSettings() {
     provider: providerSelect.value,
     model: modelSelect.value,
     apiKey: apiKeyInput.value,
+    maxTokens: parseInt(maxTokensInput.value, 10) || 10240,
     systemPrompt: systemPromptInput.value,
     summarizeMaxChars: parseInt(summarizeMaxCharsInput.value, 10) || 4000,
     detoxEnabled: detoxEnabledInput.checked,
@@ -105,6 +108,7 @@ providerSelect.addEventListener('change', () => {
 modelSelect.addEventListener('change', saveSettings);
 
 apiKeyInput.addEventListener('input', debouncedSave);
+maxTokensInput.addEventListener('input', debouncedSave);
 systemPromptInput.addEventListener('input', debouncedSave);
 summarizeMaxCharsInput.addEventListener('input', debouncedSave);
 detoxEnabledInput.addEventListener('change', saveSettings);

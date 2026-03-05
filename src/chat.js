@@ -200,10 +200,9 @@ const COMMANDS = {
     usage: '/help',
     description: 'Show available commands',
     handler() {
-      const lines = Object.entries(COMMANDS)
-        .map(([, info]) => `${info.usage} — ${info.description}`)
-        .join('\n');
-      addMessage(lines, 'system');
+      Object.entries(COMMANDS)
+        .forEach(([, info]) => addMessage(`${info.usage} — ${info.description}`, 'system'));
+
     },
   },
 };

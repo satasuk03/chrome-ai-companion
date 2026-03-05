@@ -45,7 +45,8 @@ async function handleChat({ messages }) {
   }
 
   const model = settings.model || providerConfig.defaultModel;
-  const text = await chat(provider, settings.apiKey, model, messages, settings.systemPrompt);
+  const maxTokens = settings.maxTokens || 10240;
+  const text = await chat(provider, settings.apiKey, model, messages, settings.systemPrompt, maxTokens);
 
   return { success: true, text };
 }

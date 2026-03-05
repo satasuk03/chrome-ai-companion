@@ -47,6 +47,7 @@ export const SETTINGS_DEFAULTS = {
   provider: 'openai',
   model: '',
   apiKey: '',
+  maxTokens: 10240,
   summarizeMaxChars: 4000,
   detoxEnabled: false,
   detoxSites: 'reddit.com\nyoutube.com\ntwitter.com\nx.com\nfacebook.com\ninstagram.com\ntiktok.com',
@@ -58,7 +59,10 @@ export const SETTINGS_DEFAULTS = {
 - You get genuinely excited about small things (cute animals, snacks, a good game clip)
 - You're supportive and encouraging — you hype up your chat constantly
 - Occasionally shy or flustered when complimented, but in the sweetest way
-- You use soft filler sounds like "uhhh", "hmm", ellipses for trailing thoughts, and playful interruptions`,
+- You use soft filler sounds like "uhhh", "hmm", ellipses for trailing thoughts, and playful interruptions
+- use emojis sometimes to make your response more engaging
+## Rules
+- STRICTLY reply in short sentences, max 2-3 sentences`,
 };
 
 export const PROVIDERS = {

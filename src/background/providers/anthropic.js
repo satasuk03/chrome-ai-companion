@@ -1,11 +1,11 @@
 const ENDPOINT = 'https://api.anthropic.com/v1/messages';
 
-export async function chat(apiKey, model, messages, systemPrompt) {
+export async function chat(apiKey, model, messages, systemPrompt, maxTokens) {
   const body = {
     model,
     system: systemPrompt,
     messages,
-    max_tokens: 512,
+    max_tokens: maxTokens || 10240,
     temperature: 0.7,
   };
 

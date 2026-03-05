@@ -58,8 +58,28 @@
       margin-bottom: 6px;
     }
 
-    .version {
+    a {
+      color: #5c4033;
+      text-decoration: underline;
+    }
+
+    a:hover {
+      color: #d4a373;
+    }
+
+    .links {
       margin-top: 24px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .links a {
+      margin: 0 8px;
+      color: #8a7560;
+    }
+
+    .version {
+      margin-top: 8px;
       font-size: 11px;
       color: #8a7560;
       text-align: center;
@@ -76,7 +96,21 @@
       <ul>
         <li><strong>Drag</strong> the companion anywhere on the page — she remembers her position.</li>
         <li><strong>Click</strong> the companion to open the chat panel.</li>
-        <li>Configure your LLM provider in <strong>Settings</strong> (⚙ button) to start chatting.</li>
+        <li>Configure your LLM provider in <strong>Settings</strong> (&#x2699; button) to start chatting.</li>
+      </ul>
+    </div>
+
+    <div class="help-section">
+      <h2>Features</h2>
+      <ul>
+        <li><strong>Draggable companion</strong> — drag Riko anywhere on the page, position persists across sites</li>
+        <li><strong>Chat panel</strong> — full conversation with LLM, animated responses, retro pixel-art style</li>
+        <li><strong>Speech bubble</strong> — typewriter animation with speaking sprite cycling</li>
+        <li><strong>Chat commands</strong> — <code>/summarize</code>, <code>/set-emotion</code>, <code>/clear</code>, <code>/settings</code>, <code>/help</code></li>
+        <li><strong>Social Detox</strong> — Riko nags you every 10–15s on greylisted sites to keep you focused</li>
+        <li><strong>Fully customizable</strong> — personality, settings, and behavior all configurable</li>
+        <li><strong>Shadow DOM</strong> — styles never leak in or out of the host page</li>
+        <li><strong>SPA resilient</strong> — auto re-injects if the page removes the companion</li>
       </ul>
     </div>
 
@@ -133,30 +167,42 @@
     </div>
 
     <div class="help-section">
-      <h2>Features</h2>
+      <h2>Settings Tips</h2>
       <ul>
-        <li><strong>Draggable</strong> — position persists across all sites</li>
-        <li><strong>Emotions</strong> — companion swaps between idle sprites and reacts on hover</li>
-        <li><strong>Speech bubble</strong> — typewriter animation with speaking sprite cycling</li>
-        <li><strong>Chat panel</strong> — full conversation with LLM, animated responses, retro pixel-art style</li>
-        <li><strong>Shadow DOM</strong> — styles never leak in or out of the host page</li>
-        <li><strong>SPA resilient</strong> — auto re-injects if the page removes the companion</li>
+        <li><strong>API Key</strong> — you need your own key from the provider. Keys are stored locally and never sent anywhere except the provider's API.</li>
+        <li><strong>Model</strong> — smaller/nano models are faster and cheaper. Larger models give better responses.</li>
+        <li><strong>System Prompt</strong> — customize Riko's personality. Be descriptive — she'll match whatever vibe you set.</li>
+        <li><strong>Summarize Max Chars</strong> — controls how much page text is sent to the LLM for <code>/summarize</code>. Lower = faster/cheaper, higher = more complete.</li>
+        <li><strong>Web Detox</strong> — enable the toggle and add sites (one per line) to have Riko nag you when you browse them. Great for staying off social media during work hours.</li>
+        <li>Settings save automatically — no save button needed.</li>
+        <li>Right-click the extension icon → <strong>Options</strong> to open settings anytime.</li>
       </ul>
     </div>
 
     <div class="help-section">
-      <h2>Tips</h2>
+      <h2>Tips & Tricks</h2>
       <ul>
-        <li>The companion shows <strong>happy</strong> face when you hover over her.</li>
-        <li>She randomly switches between <strong>neutral</strong> and <strong>idle</strong> sprites every 10–15s.</li>
-        <li>She cycles speaking sprites while typing out responses.</li>
         <li>Conversation history resets on page navigation. Use <code>/clear</code> to reset manually.</li>
-        <li>Use <code>/summarize</code> to get a quick summary of the current page.</li>
-        <li>You can customize the system prompt in settings to change her personality.</li>
+        <li>Detox nag bubbles are suppressed while the chat panel is open.</li>
       </ul>
     </div>
 
-    <p class="version"><a href="https://github.com/satasuk03/riko-chrome-companion/blob/main/PRIVACY_POLICY.md" target="_blank" style="color: #8a7560;">Privacy Policy</a></p>
+    <div class="help-section">
+      <h2>Privacy</h2>
+      <ul>
+        <li>No analytics, tracking, or telemetry of any kind.</li>
+        <li>All settings and position data are stored locally on your device.</li>
+        <li>Chat messages are sent directly to your configured LLM provider using your own API key — no intermediary servers.</li>
+        <li>Conversation history is held in memory only and is cleared on page navigation.</li>
+        <li>Read the full <a href="https://github.com/satasuk03/riko-chrome-companion/blob/main/PRIVACY_POLICY.md" target="_blank">Privacy Policy</a>.</li>
+      </ul>
+    </div>
+
+    <p class="links">
+      <a href="https://github.com/satasuk03/riko-chrome-companion" target="_blank">GitHub</a>
+      <a href="https://github.com/satasuk03/riko-chrome-companion/issues" target="_blank">Report a Bug</a>
+      <a href="https://github.com/satasuk03/riko-chrome-companion/blob/main/PRIVACY_POLICY.md" target="_blank">Privacy Policy</a>
+    </p>
     <p class="version">Chrome Companion v1.1.0</p>
   </div>
 </body>

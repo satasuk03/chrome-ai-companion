@@ -62,7 +62,7 @@ To create a release zip: `npm run release`
 | `/settings` | Open extension settings |
 | `/help` | List available commands |
 
-## LLM Providers
+## Supported LLM Providers
 
 Configure via the extension settings page (right-click extension icon → Options):
 
@@ -71,11 +71,8 @@ Configure via the extension settings page (right-click extension icon → Option
 | OpenAI | `gpt-5-nano-2025-08-07` |
 | Anthropic | `claude-sonnet-4-20250514` |
 | Google Gemini | `gemini-3-flash-preview` |
+| Ollama | 🚧 WORK IN PROGRESS 🚧 |
 
-## Tech Stack
+## Note
 
-- **Manifest V3** — content scripts, service worker, storage API
-- **Shadow DOM (closed)** — full CSS isolation
-- **Pointer Events** — drag with `setPointerCapture`
-- **esbuild** — sub-10ms bundling, zero config
-- **No frameworks** — plain JS, no runtime dependencies
+I'm working on porting this project into MacOS and Windows with Godot!

@@ -6,7 +6,8 @@
   "scripts": {
     "build": "esbuild src/content.js --bundle --outfile=dist/content.js && esbuild src/background/service-worker.js --bundle --outfile=dist/background.js && esbuild options/options.js --bundle --outfile=dist/options.js",
     "dev": "npm run build && (esbuild src/content.js --bundle --outfile=dist/content.js --watch & esbuild src/background/service-worker.js --bundle --outfile=dist/background.js --watch & esbuild options/options.js --bundle --outfile=dist/options.js --watch)",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "release": "npm run build && zip -r riko-chrome-companion.zip manifest.json content.css dist/ assets/*.webp options/"
   },
   "devDependencies": {
     "esbuild": "^0.25.0"

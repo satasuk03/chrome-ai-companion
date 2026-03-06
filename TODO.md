@@ -8,3 +8,4 @@
   - [ ] /update-memory <what_to_update> -> update the memory of the companion
   - [ ] /mode <mode> -> set the mode of the companion
     - `translate <target_language>` -> translation assistant, focus on the text given by the user and translate it to the target_language
+- [ ] Time spent on focused web tracker

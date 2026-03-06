@@ -14,6 +14,13 @@
   <img src="demos/demo.gif" alt="Chrome Companion demo" width="600" />
 </div>
 
+## Install (TL;DR)
+
+1. [Download this repo](../../archive/refs/heads/main.zip) and unzip it
+2. Go to `chrome://extensions` → enable **Developer mode**
+3. Click **Load unpacked** → select the unzipped folder
+4. Done! Riko appears on every page
+
 ## Features
 
 - **Draggable companion** — drag Riko anywhere on the page, position persists across sites
@@ -23,14 +30,12 @@
 - **Social Detox Assistant** — keep nagging you to take a break from social media.
 - **Fully Customizable** — customize Riko's personality, app settings, and behavior to your liking.
 - **Emotion system**  - express emotion based on response
-- 🚧 **Customizable Companion** - bring your own appearance!
-
 
 <div align="center">
   <img src="demos/social-detox.webp" alt="Social Detox Assistant" width="300" />
 </div>
 
-## Getting Started
+## Build from Source
 
 ```bash
 npm install && npm run build
@@ -41,6 +46,8 @@ npm install && npm run build
 3. Open any website — Riko appears in the bottom-right corner
 
 For development with auto-rebuild: `npm run dev`
+
+To create a release zip: `npm run release`
 
 ## Chat Commands
 

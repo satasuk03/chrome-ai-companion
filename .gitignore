@@ -20,8 +20,8 @@ Thumbs.db
 .idea/
 
 # Build output
-dist/
 build/
+*.zip
 
 # Environment
 .env

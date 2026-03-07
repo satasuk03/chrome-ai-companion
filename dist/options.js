@@ -170,5 +170,48 @@
       }
     );
   });
+  var timeStatsEl = document.getElementById("timeStats");
+  var refreshTimeBtn = document.getElementById("refreshTimeBtn");
+  var clearTimeBtn = document.getElementById("clearTimeBtn");
+  function formatDuration(ms) {
+    const totalMinutes = Math.floor(ms / 6e4);
+    if (totalMinutes < 1) return "<1m";
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    if (hours === 0) return `${minutes}m`;
+    return minutes > 0 ? `${hours}h ${minutes}m` : `${hours}h`;
+  }
+  function loadTimeData() {
+    chrome.runtime.sendMessage({ type: "GET_TIME_TRACKING_DATA" }, (response) => {
+      if (chrome.runtime.lastError || !response?.success) {
+        timeStatsEl.textContent = "Could not load data.";
+        return;
+      }
+      const data = response.data;
+      const entries = Object.entries(data).filter(([d]) => d && d !== "null").sort((a, b) => b[1] - a[1]);
+      if (entries.length === 0) {
+        timeStatsEl.textContent = "No data yet. Browse some sites!";
+        return;
+      }
+      const table = document.createElement("table");
+      table.style.cssText = "width:100%;border-collapse:collapse;font-size:13px;";
+      const header = table.insertRow();
+      header.innerHTML = '<th style="text-align:left;padding:4px 8px;border-bottom:2px solid #d4a373;">Site</th><th style="text-align:right;padding:4px 8px;border-bottom:2px solid #d4a373;">Time</th>';
+      for (const [domain, ms] of entries) {
+        const row = table.insertRow();
+        row.innerHTML = `<td style="padding:4px 8px;border-bottom:1px solid #e8d5b7;">${domain}</td><td style="text-align:right;padding:4px 8px;border-bottom:1px solid #e8d5b7;">${formatDuration(ms)}</td>`;
+      }
+      timeStatsEl.innerHTML = "";
+      timeStatsEl.appendChild(table);
+    });
+  }
+  refreshTimeBtn.addEventListener("click", loadTimeData);
+  clearTimeBtn.addEventListener("click", () => {
+    if (!confirm("Clear all time tracking data?")) return;
+    chrome.runtime.sendMessage({ type: "CLEAR_TIME_TRACKING_DATA" }, () => {
+      loadTimeData();
+    });
+  });
   init();
+  loadTimeData();
 })();

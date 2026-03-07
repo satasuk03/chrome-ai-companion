@@ -6,6 +6,10 @@
   };
 
   // src/constants.js
+  var TIME_TRACKING_KEY = "time_tracking_data";
+  var TIME_TRACKING_ALARM = "TIME_TRACKING_FLUSH";
+  var TIME_TRACKING_FLUSH_INTERVAL = 0.5;
+  var IDLE_THRESHOLD_SECONDS = 120;
   var SETTINGS_KEY = "companion_settings";
   var SETTINGS_DEFAULTS = {
     provider: "openai",
@@ -171,7 +175,116 @@
     return adapter.chat(apiKey, model, messages, systemPrompt, maxTokens);
   }
 
+  // src/background/time-tracker.js
+  var currentDomain = null;
+  var trackingStartTime = null;
+  var isWindowFocused = true;
+  var isIdle = false;
+  function extractDomain(url) {
+    if (!url) return null;
+    try {
+      const u = new URL(url);
+      if (u.protocol === "chrome:" || u.protocol === "chrome-extension:") return null;
+      return u.hostname;
+    } catch {
+      return null;
+    }
+  }
+  function startTracking(domain) {
+    currentDomain = domain;
+    trackingStartTime = domain ? Date.now() : null;
+  }
+  function stopTracking() {
+    flushElapsed();
+    currentDomain = null;
+    trackingStartTime = null;
+  }
+  function shouldTrack() {
+    return isWindowFocused && !isIdle;
+  }
+  async function flushElapsed() {
+    if (!currentDomain || !trackingStartTime) return;
+    const elapsed = Date.now() - trackingStartTime;
+    trackingStartTime = Date.now();
+    if (elapsed < 1e3) return;
+    const result = await chrome.storage.local.get(TIME_TRACKING_KEY);
+    const data = result[TIME_TRACKING_KEY] || {};
+    data[currentDomain] = (data[currentDomain] || 0) + elapsed;
+    await chrome.storage.local.set({ [TIME_TRACKING_KEY]: data });
+  }
+  async function updateActiveTab() {
+    if (!shouldTrack()) {
+      stopTracking();
+      return;
+    }
+    try {
+      const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+      const domain = tab ? extractDomain(tab.url) : null;
+      if (domain !== currentDomain) {
+        await flushElapsed();
+        startTracking(domain);
+      }
+    } catch {
+      stopTracking();
+    }
+  }
+  async function restoreState() {
+    try {
+      const state = await chrome.idle.queryState(IDLE_THRESHOLD_SECONDS);
+      isIdle = state !== "active";
+      const win = await chrome.windows.getLastFocused();
+      isWindowFocused = win.focused;
+    } catch {
+      isWindowFocused = false;
+      isIdle = false;
+    }
+    await updateActiveTab();
+  }
+  function initTimeTracker() {
+    chrome.idle.setDetectionInterval(IDLE_THRESHOLD_SECONDS);
+    chrome.tabs.onActivated.addListener(() => updateActiveTab());
+    chrome.tabs.onUpdated.addListener((_tabId, changeInfo) => {
+      if (changeInfo.url) updateActiveTab();
+    });
+    chrome.windows.onFocusChanged.addListener((windowId) => {
+      isWindowFocused = windowId !== chrome.windows.WINDOW_ID_NONE;
+      updateActiveTab();
+    });
+    chrome.idle.onStateChanged.addListener((state) => {
+      isIdle = state !== "active";
+      updateActiveTab();
+    });
+    chrome.alarms.create(TIME_TRACKING_ALARM, {
+      periodInMinutes: TIME_TRACKING_FLUSH_INTERVAL
+    });
+    chrome.alarms.onAlarm.addListener((alarm) => {
+      if (alarm.name === TIME_TRACKING_ALARM) {
+        flushElapsed();
+      }
+    });
+    chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+      if (message.type === "GET_TIME_TRACKING_DATA") {
+        flushElapsed().then(() => {
+          chrome.storage.local.get(TIME_TRACKING_KEY, (result) => {
+            sendResponse({ success: true, data: result[TIME_TRACKING_KEY] || {} });
+          });
+        });
+        return true;
+      }
+      if (message.type === "CLEAR_TIME_TRACKING_DATA") {
+        stopTracking();
+        chrome.storage.local.remove(TIME_TRACKING_KEY, () => {
+          startTracking(currentDomain);
+          sendResponse({ success: true });
+        });
+        return true;
+      }
+    });
+    restoreState();
+  }
+
   // src/background/service-worker.js
+  initTimeTracker();
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === "CHAT_REQUEST") {
       handleChat(message).then(sendResponse).catch((err) => sendResponse({ success: false, error: err.message }));

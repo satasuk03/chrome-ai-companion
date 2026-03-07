@@ -33,6 +33,7 @@
 - **Social Detox Assistant** — keep nagging you to take a break from social media.
 - **Fully Customizable** — customize Riko's personality, app settings, and behavior to your liking.
 - **Emotion system**  - express emotion based on response
+- **Time Tracking** — see how long you spend on each site; pauses when Chrome loses focus or you go idle
 - 🚧 **Ollama Local Model Support** - Incoming
 
 <div align="center">

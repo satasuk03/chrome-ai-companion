@@ -47,6 +47,12 @@ export const DETOX_MESSAGES = [
   "I'm gonna keep bugging you until you leave, you know that right~?",
 ];
 
+// ── Time Tracking ───────────────────────────────────────────────────
+export const TIME_TRACKING_KEY = 'time_tracking_data';
+export const TIME_TRACKING_ALARM = 'TIME_TRACKING_FLUSH';
+export const TIME_TRACKING_FLUSH_INTERVAL = 0.5; // 30s (MV3 alarm minimum)
+export const IDLE_THRESHOLD_SECONDS = 120;
+
 // ── Settings ─────────────────────────────────────────────────────────
 export const SETTINGS_KEY = 'companion_settings';
 

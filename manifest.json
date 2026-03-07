@@ -3,7 +3,7 @@
   "name": "Riko Chrome Companion",
   "version": "1.1.0",
   "description": "A chrome companion that lives in your browser — drag her around, chat with her, and she'll talk back",
-  "permissions": ["storage"],
+  "permissions": ["storage", "tabs", "idle", "alarms"],
   "host_permissions": [
     "https://api.openai.com/*",
     "https://api.anthropic.com/*",

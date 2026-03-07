@@ -30,10 +30,11 @@
 │                                                         │
 │  service-worker.js                                      │
 │    ├── onMessage handler (CHAT_REQUEST, TEST_CONNECTION) │
-│    └── llm.js (router)                                  │
-│          ├── providers/openai.js                        │
-│          ├── providers/anthropic.js                     │
-│          └── providers/gemini.js                        │
+│    ├── llm.js (router)                                  │
+│    │     ├── providers/openai.js                        │
+│    │     ├── providers/anthropic.js                     │
+│    │     └── providers/gemini.js                        │
+│    └── time-tracker.js (website time tracking)          │
 └─────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────┐
@@ -71,17 +72,29 @@ All modules export an `init()` function that receives dependencies via parameter
 
 ## Background Service Worker
 
-Handles LLM API routing. Receives `CHAT_REQUEST` messages from the content script and delegates to the appropriate provider adapter.
+Handles LLM API routing and website time tracking. Receives messages from the content script and options page.
 
 ```
 chrome.runtime.onMessage
-  └── CHAT_REQUEST → llm.chat()
-        ├── openai.chat(apiKey, model, messages, systemPrompt)
-        ├── anthropic.chat(apiKey, model, messages, systemPrompt)
-        └── gemini.chat(apiKey, model, messages, systemPrompt)
+  ├── CHAT_REQUEST → llm.chat()
+  │     ├── openai.chat(apiKey, model, messages, systemPrompt)
+  │     ├── anthropic.chat(apiKey, model, messages, systemPrompt)
+  │     └── gemini.chat(apiKey, model, messages, systemPrompt)
+  ├── GET_TIME_TRACKING_DATA → return stored time data
+  └── CLEAR_TIME_TRACKING_DATA → reset stored time data
 ```
 
 All providers implement the same interface: `chat(apiKey, model, messages, systemPrompt) → { success, text } | { success, error }`
+
+### Time Tracker (`time-tracker.js`)
+
+Tracks active browsing time per domain. Only counts time when Chrome is focused AND the tab is active — switching apps or going idle stops the counter.
+
+**Event listeners:** `chrome.tabs.onActivated`, `chrome.tabs.onUpdated`, `chrome.windows.onFocusChanged`, `chrome.idle.onStateChanged`, `chrome.alarms` (30s periodic flush).
+
+**On service worker restart:** re-queries idle state, focused window, and active tab to resume tracking seamlessly.
+
+**Storage:** flushes elapsed milliseconds to `chrome.storage.local` under `time_tracking_data` as `{ domain: totalMs }`.
 
 ## Communication Flow
 
@@ -135,6 +148,7 @@ All data stored in `chrome.storage.local`:
 |---|---|---|
 | `companion_position` | `{ x: number, y: number }` | Last dragged position |
 | `companion_settings` | `{ provider, model, apiKey, summarizeMaxChars, systemPrompt }` | User preferences |
+| `time_tracking_data` | `{ [domain: string]: number }` | Accumulated browsing time per domain (ms) |
 
 ## Chat Commands
 

@@ -1,6 +1,9 @@
 import { PROVIDERS } from '../constants.js';
 import { loadSettings } from '../settings.js';
 import { chat } from './llm.js';
+import { initTimeTracker } from './time-tracker.js';
+
+initTimeTracker();
 
 // ── Message listener (must be registered synchronously at top level) ──
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

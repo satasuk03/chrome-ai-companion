@@ -5,7 +5,7 @@ echo "Building..."
 npm install
 npm run build
 
-ZIP="riko-chrome-companion.zip"
+ZIP="release/riko-chrome-companion.zip"
 rm -f "$ZIP"
 
 echo "Packaging..."

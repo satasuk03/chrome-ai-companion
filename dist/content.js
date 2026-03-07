@@ -791,6 +791,14 @@
   var conversationHistory = [];
   var isWaitingForResponse = false;
   var activeChatTypewriterCancel = null;
+  function formatDuration(ms) {
+    const totalMinutes = Math.floor(ms / 6e4);
+    if (totalMinutes < 1) return "<1m";
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    if (hours === 0) return `${minutes}m`;
+    return minutes > 0 ? `${hours}h ${minutes}m` : `${hours}h`;
+  }
   function initChat(elements, deps) {
     chatPanel = elements.panel;
     chatMessages = elements.messages;
@@ -948,6 +956,77 @@ ${pageText}`;
             }
           }
         );
+      }
+    },
+    "/stats": {
+      usage: "/stats",
+      description: "Show your top browsing stats (roasted by Riko if LLM is connected)",
+      async handler() {
+        addTypingIndicator();
+        isWaitingForResponse = true;
+        chatInput.disabled = true;
+        chrome.runtime.sendMessage({ type: "GET_TIME_TRACKING_DATA" }, async (response) => {
+          if (chrome.runtime.lastError || !response?.success) {
+            removeTypingIndicator();
+            isWaitingForResponse = false;
+            chatInput.disabled = false;
+            addMessage("Could not load time tracking data.", "system");
+            return;
+          }
+          const data = response.data;
+          const entries = Object.entries(data).filter(([d]) => d && d !== "null").sort((a, b) => b[1] - a[1]);
+          if (entries.length === 0) {
+            removeTypingIndicator();
+            isWaitingForResponse = false;
+            chatInput.disabled = false;
+            addMessage("No browsing data yet. Keep browsing!", "system");
+            return;
+          }
+          removeTypingIndicator();
+          const top5 = entries.slice(0, 5);
+          const totalMs = top5.reduce((sum, [, ms]) => sum + ms, 0);
+          addMessage("--Your Internet Stats--");
+          for (const [domain, ms] of top5) {
+            const pct = Math.round(ms / totalMs * 100);
+            addMessage(`${domain} ${pct}% (${formatDuration(ms)})`);
+          }
+          const settings = await loadSettings();
+          if (!settings.apiKey) {
+            isWaitingForResponse = false;
+            chatInput.disabled = false;
+            return;
+          }
+          addTypingIndicator();
+          const top10 = entries.slice(0, 10);
+          const statsText = top10.map(([domain, ms]) => {
+            const mins = Math.round(ms / 6e4);
+            return `${domain} \u2014 ${mins < 1 ? "<1" : mins} min`;
+          }).join("\n");
+          const prompt = `This is time I spent on websites sorted by time
+Feel free to roast me
+${statsText}`;
+          conversationHistory.push({ role: "user", content: prompt });
+          chrome.runtime.sendMessage(
+            { type: "CHAT_REQUEST", messages: getConversationHistory() },
+            (resp) => {
+              removeTypingIndicator();
+              isWaitingForResponse = false;
+              chatInput.disabled = false;
+              chatInput.focus();
+              if (chrome.runtime.lastError) {
+                addMessage("Error: Could not reach companion service.", "system");
+                return;
+              }
+              if (resp?.success) {
+                const parsed = parseEmote(resp.text);
+                conversationHistory.push({ role: "assistant", content: parsed.text });
+                addMessageAnimated(parsed.text, "companion", void 0, parsed.emotion);
+              } else {
+                addMessage(`Error: ${resp?.error || "No response from LLM."}`, "system");
+              }
+            }
+          );
+        });
       }
     },
     "/help": {

@@ -960,7 +960,7 @@ ${pageText}`;
     },
     "/stats": {
       usage: "/stats",
-      description: "Show your top browsing stats (roasted by Riko if LLM is connected)",
+      description: "Show your top browsing stats (with cute facts from Riko if LLM is connected)",
       async handler() {
         addTypingIndicator();
         isWaitingForResponse = true;
@@ -1003,7 +1003,7 @@ ${pageText}`;
             return `${domain} \u2014 ${mins < 1 ? "<1" : mins} min`;
           }).join("\n");
           const prompt = `This is time I spent on websites sorted by time
-Feel free to roast me
+Share a cute fun fact about yourself related to my browsing habits, be sweet and supportive!
 ${statsText}`;
           conversationHistory.push({ role: "user", content: prompt });
           chrome.runtime.sendMessage(

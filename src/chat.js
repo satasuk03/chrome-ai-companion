@@ -209,7 +209,7 @@ const COMMANDS = {
   },
   '/stats': {
     usage: '/stats',
-    description: 'Show your top browsing stats (roasted by Riko if LLM is connected)',
+    description: 'Show your top browsing stats (with cute facts from Riko if LLM is connected)',
     async handler() {
       addTypingIndicator();
       isWaitingForResponse = true;
@@ -246,7 +246,7 @@ const COMMANDS = {
           addMessage(`${domain} ${pct}% (${formatDuration(ms)})`);
         }
 
-        // If LLM is available, send top 10 for roasting
+        // If LLM is available, send top 10 for cute facts
         const settings = await loadSettings();
         if (!settings.apiKey) {
           isWaitingForResponse = false;
@@ -262,7 +262,7 @@ const COMMANDS = {
           return `${domain} — ${mins < 1 ? '<1' : mins} min`;
         }).join('\n');
 
-        const prompt = `This is time I spent on websites sorted by time\nFeel free to roast me\n${statsText}`;
+        const prompt = `This is time I spent on websites sorted by time\nShare a cute fun fact about yourself related to my browsing habits, be sweet and supportive!\n${statsText}`;
         conversationHistory.push({ role: 'user', content: prompt });
 
         chrome.runtime.sendMessage(
